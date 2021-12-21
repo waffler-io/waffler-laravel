@@ -1,10 +1,18 @@
 <?php
 
+/*
+ * This file is part of Waffler.
+ *
+ * (c) Erick Johnson Almeida de Menezes <erickmenezes.dev@gmail.com>
+ *
+ * This source file is subject to the MIT licence that is bundled
+ * with this source code in the file LICENCE.
+ */
+
 namespace Waffler\Laravel;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use RuntimeException;
 use Waffler\Client\Factory;
 
 /**
@@ -12,38 +20,40 @@ use Waffler\Client\Factory;
  *
  * @author ErickJMenezes <erickmenezes.dev@gmail.com>
  */
-class WafflerServiceProvider extends ServiceProvider implements DeferrableProvider
+class WafflerServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->registerClients();
     }
 
     public function boot(): void
     {
-        $this->publishes([
-            __DIR__.'/config.php' => $this->app->configPath('waffler.php')
-        ]);
-    }
-
-    public function provides()
-    {
-        return array_keys($this->getClientsToLoad());
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/waffler.php' => config_path('waffler.php'),
+            ], 'config');
+        }
     }
 
     private function registerClients(): void
     {
+        $sharedConfig = config('waffler.shared_config', []);
+
         foreach ($this->getClientsToLoad() as $clientInterface => $options) {
-            if (!empty($options)) {
-                $this->app->singleton(
-                    $clientInterface,
-                    fn() => Factory::make($clientInterface, $options)
-                );
-            } else {
-                $this->app->bind(
-                    $clientInterface,
-                    fn($app, $args) => Factory::make($clientInterface, $args[0] ?? $options)
-                );
+            $factory = fn ($app, $args) => Factory::make(
+                $clientInterface,
+                array_merge_recursive($sharedConfig, $options, $args[0] ?? [])
+            );
+
+            $this->app->bind(
+                $clientInterface,
+                $factory,
+                !empty($options)
+            );
+
+            if ($alias = config('waffler.aliases.'.$clientInterface, false)) {
+                $this->app->alias($clientInterface, $alias);
             }
         }
     }
@@ -57,16 +67,18 @@ class WafflerServiceProvider extends ServiceProvider implements DeferrableProvid
     private function getClientsToLoad(): array
     {
         /** @var array<class-string|int, class-string|array<string, mixed>> $clients */
-        $clients = Config::get('waffler.clients.'.$this->app->environment(), []);
+        $clients = config('waffler.clients', []);
 
         /** @var array<class-string, array<string, mixed>> $normalizedArray */
         $normalizedArray = [];
 
         foreach ($clients as $classStringOrIndex => $classStringOrOptions) {
-            if (is_string($classStringOrIndex)) {
+            if (is_string($classStringOrIndex) && is_array($classStringOrOptions)) {
                 $normalizedArray[$classStringOrIndex] = $classStringOrOptions;
-            } else {
+            } elseif (is_string($classStringOrOptions)) {
                 $normalizedArray[$classStringOrOptions] = [];
+            } else {
+                throw new RuntimeException("The waffler config file is invalid. The type of 'clients' must match array<class-string, array<string, mixed>>|array<class-string>");
             }
         }
 
