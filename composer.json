@@ -1,0 +1,42 @@
+{
+  "name": "waffler/waffler-laravel",
+  "description": "Laravel wrapper for waffler/waffler",
+  "type": "library",
+  "require": {
+    "php": "^8.0",
+    "waffler/waffler": "^0.3.0",
+    "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.3",
+    "phpunit/phpunit": "^7.0 || ^8.5.21 || ^9.0",
+    "phpstan/phpstan": "^1.2.0",
+    "jetbrains/phpstorm-attributes": "dev-master",
+    "friendsofphp/php-cs-fixer": "^3.4"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Waffler\\Laravel\\": "src/WafflerLaravel/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Waffler\\Laravel\\Tests\\": "tests"
+    }
+  },
+  "authors": [
+    {
+      "name": "ErickJMenezes",
+      "email": "erickmenezes.dev@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Waffler\\Laravel\\WafflerServiceProvider"
+      ]
+    }
+  }
+}
