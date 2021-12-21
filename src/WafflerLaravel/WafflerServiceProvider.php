@@ -24,6 +24,8 @@ class WafflerServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/waffler.php', 'waffler');
+
         $this->registerClients();
     }
 
@@ -32,7 +34,7 @@ class WafflerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/waffler.php' => config_path('waffler.php'),
-            ], ['config', 'laravel-assets']);
+            ], 'waffler');
         }
     }
 
