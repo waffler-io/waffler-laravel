@@ -32,7 +32,7 @@ class WafflerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/waffler.php' => config_path('waffler.php'),
-            ], 'config');
+            ], ['config', 'laravel-assets']);
         }
     }
 
