@@ -39,7 +39,7 @@
     "post-autoload-dump": [
       "@php ./vendor/bin/testbench package:discover --ansi"
     ],
-    "post-package-install": [
+    "post-install-cmd": [
       "php artisan vendor:publish --tag=waffler --force"
     ]
   },
