@@ -30,5 +30,15 @@ return [
      */
     'shared_config' => [
         // 'headers' => ['X-Foo-Bar' => 'Baz']
+    ],
+
+    /*
+     * Clients that must be bound as singletons.
+     *
+     * This type of binding is recommended when you don't need to provide guzzle http options in runtime. Singleton
+     * bindings is always faster to resolve from the container than regular bindings after the first instantiation.
+     */
+    'singletons' => [
+        // 'App\\Clients\\MyClient',
     ]
 ];

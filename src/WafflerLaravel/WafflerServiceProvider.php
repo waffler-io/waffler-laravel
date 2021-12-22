@@ -25,7 +25,7 @@ class WafflerServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/waffler.php', 'waffler');
+        $this->mergeConfigFrom(self::getPackageConfigPath(), 'waffler');
 
         $this->registerClients();
     }
@@ -37,7 +37,7 @@ class WafflerServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../config/waffler.php' => config_path('waffler.php'),
+            self::getPackageConfigPath() => config_path('waffler.php'),
         ], 'waffler-config');
 
         $this->commands([
@@ -58,7 +58,7 @@ class WafflerServiceProvider extends ServiceProvider
             $this->app->bind(
                 $clientInterface,
                 $factory,
-                !empty($options)
+                in_array($clientInterface, config('waffler.singletons', []))
             );
 
             if ($alias = config('waffler.aliases.'.$clientInterface, false)) {
@@ -92,5 +92,14 @@ class WafflerServiceProvider extends ServiceProvider
         }
 
         return $normalizedArray;
+    }
+
+    /**
+     * @return non-empty-string
+     * @author ErickJMenezes <erickmenezes.dev@gmail.com>
+     */
+    private static function getPackageConfigPath(): string
+    {
+        return __DIR__.'/../config/waffler.php';
     }
 }
