@@ -14,6 +14,7 @@ namespace Waffler\Laravel;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 use Waffler\Client\Factory;
+use Waffler\Laravel\Commands\Install;
 
 /**
  * Class WafflerServiceProvider.
@@ -31,11 +32,17 @@ class WafflerServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/waffler.php' => config_path('waffler.php'),
-            ], ['waffler', 'waffler-config']);
+        if (!$this->app->runningInConsole()) {
+            return;
         }
+
+        $this->publishes([
+            __DIR__.'/../config/waffler.php' => config_path('waffler.php'),
+        ], 'waffler-config');
+
+        $this->commands([
+            Install::class,
+        ]);
     }
 
     private function registerClients(): void
