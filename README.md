@@ -13,5 +13,7 @@ array with you client interfaces and guzzle http configurations.
 ## Installation
 
 ```shell
-$ composer require waffler/waffler-laravel
+composer require waffler/waffler-laravel
+
+php artisan waffler:install # publish the config file
 ```
