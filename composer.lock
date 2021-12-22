@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f26528326a83eeeb1ba0879f370c12fd",
+    "content-hash": "bf43558860df82c025fe5f02a0de9dee",
     "packages": [
         {
             "name": "brick/math",
@@ -4970,16 +4970,16 @@
         },
         {
             "name": "waffler/waffler",
-            "version": "0.3.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffler-io/waffler.git",
-                "reference": "56d67859583c690e126d6c9e6c2c287ee9652ab2"
+                "reference": "23f4c417bbcb85f6cdfd12b83644a646206bd974"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffler-io/waffler/zipball/56d67859583c690e126d6c9e6c2c287ee9652ab2",
-                "reference": "56d67859583c690e126d6c9e6c2c287ee9652ab2",
+                "url": "https://api.github.com/repos/waffler-io/waffler/zipball/23f4c417bbcb85f6cdfd12b83644a646206bd974",
+                "reference": "23f4c417bbcb85f6cdfd12b83644a646206bd974",
                 "shasum": ""
             },
             "require": {
@@ -5015,9 +5015,9 @@
             "description": "Make REST clients easy.",
             "support": {
                 "issues": "https://github.com/waffler-io/waffler/issues",
-                "source": "https://github.com/waffler-io/waffler/tree/0.3.0"
+                "source": "https://github.com/waffler-io/waffler/tree/0.5.0"
             },
-            "time": "2021-12-20T22:02:50+00:00"
+            "time": "2021-12-22T21:33:22+00:00"
         },
         {
             "name": "webmozart/assert",
