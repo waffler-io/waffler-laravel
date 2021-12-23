@@ -58,7 +58,7 @@ class WafflerServiceProvider extends ServiceProvider
             $this->app->bind(
                 $clientInterface,
                 $factory,
-                in_array($clientInterface, config('waffler.singletons', []))
+                in_array($clientInterface, config('waffler.singletons', []), true)
             );
 
             if ($alias = config('waffler.aliases.'.$clientInterface, false)) {
