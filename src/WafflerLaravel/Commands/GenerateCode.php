@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Waffler.
+ *
+ * (c) Erick Johnson Almeida de Menezes <erickmenezes.dev@gmail.com>
+ *
+ * This source file is subject to the MIT licence that is bundled
+ * with this source code in the file LICENCE.
+ */
+
 namespace Waffler\Laravel\Commands;
 
 use Illuminate\Console\Command;
@@ -15,7 +24,7 @@ class GenerateCode extends Command
 {
     protected $signature = 'waffler:generate-code';
 
-     protected $description = 'Generate code using OpenAPI files.';
+    protected $description = 'Generate code using OpenAPI files.';
 
     public function handle(): bool
     {
@@ -36,6 +45,7 @@ class GenerateCode extends Command
             }
 
             $outputDir = $this->convertNamespaceToPath($extraNamespace);
+            //@phpstan-ignore-next-line
             $generator->fromOpenApiFile($pathToFile, $outputDir, $extraNamespace);
         }
 
@@ -45,7 +55,7 @@ class GenerateCode extends Command
     /**
      * @param string $namespace
      *
-     * @return non-empty-string
+     * @return string
      * @author ErickJMenezes <erickmenezes.dev@gmail.com>
      */
     private function convertNamespaceToPath(string $namespace): string
