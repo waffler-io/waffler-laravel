@@ -40,5 +40,27 @@ return [
      */
     'singletons' => [
         // 'App\\Clients\\MyClient',
+    ],
+
+    /*
+     * Generate code using your swagger or another openapi files.
+     */
+    'code_generation' => [
+
+        /*
+         * The base namespace that all interfaces will be generated.
+         */
+        'namespace' => 'App\\Http\\Clients',
+
+        /*
+         * Path to openapi files to generate the code.
+         *
+         * You can specify an inner namespace to better organization when you have multiple files.
+         * Deeper Namespaces will create Deeper folders.
+         */
+        'openapi_files' => [
+            // __DIR__.'/path/to/your-swagger-file.json',
+            // __DIR__.'/path/to/another-openapi-file.json' => 'Extra\\Namespace',
+        ]
     ]
 ];

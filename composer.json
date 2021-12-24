@@ -5,7 +5,8 @@
   "require": {
     "php": "^8.0",
     "waffler/waffler": "^0.5.1",
-    "illuminate/support": "^6.0 || ^7.0 || ^8.0"
+    "illuminate/support": "^6.0 || ^7.0 || ^8.0",
+    "waffler/opengen": "dev-main"
   },
   "require-dev": {
     "mockery/mockery": "^1.3",

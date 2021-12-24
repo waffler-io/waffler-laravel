@@ -14,6 +14,7 @@ namespace Waffler\Laravel;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 use Waffler\Client\Factory;
+use Waffler\Laravel\Commands\GenerateCode;
 use Waffler\Laravel\Commands\Install;
 
 /**
@@ -42,6 +43,7 @@ class WafflerServiceProvider extends ServiceProvider
 
         $this->commands([
             Install::class,
+            GenerateCode::class,
         ]);
     }
 
