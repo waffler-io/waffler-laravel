@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfd026be2458bc52b43333eb21309d8e",
+    "content-hash": "77dd267e229f3db4ee1c903c11c05bbe",
     "packages": [
         {
             "name": "brick/math",
@@ -970,12 +970,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "38f91136eaab164e5de60858ee684de0a5dcf06d"
+                "reference": "972538f7071e73dcff429c1cb0ec143d66d82dc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/38f91136eaab164e5de60858ee684de0a5dcf06d",
-                "reference": "38f91136eaab164e5de60858ee684de0a5dcf06d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/972538f7071e73dcff429c1cb0ec143d66d82dc1",
+                "reference": "972538f7071e73dcff429c1cb0ec143d66d82dc1",
                 "shasum": ""
             },
             "require": {
@@ -1135,7 +1135,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-12-23T15:28:16+00:00"
+            "time": "2021-12-23T20:27:48+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -2580,12 +2580,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "cd372a7b47a54734cbd491df40b5a48614d8d374"
+                "reference": "e5fa293e14abdb6488fe2a6761586f02758198d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/cd372a7b47a54734cbd491df40b5a48614d8d374",
-                "reference": "cd372a7b47a54734cbd491df40b5a48614d8d374",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/e5fa293e14abdb6488fe2a6761586f02758198d4",
+                "reference": "e5fa293e14abdb6488fe2a6761586f02758198d4",
                 "shasum": ""
             },
             "require": {
@@ -2671,7 +2671,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-10-13T18:44:27+00:00"
+            "time": "2021-12-24T16:04:50+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5315,16 +5315,16 @@
         },
         {
             "name": "waffler/opengen",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffler-io/opengen.git",
-                "reference": "c36e619da6c7d07a126e1928c294498e11750284"
+                "reference": "85d84a43050c11e6742faa17ff30312c4ff36343"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/c36e619da6c7d07a126e1928c294498e11750284",
-                "reference": "c36e619da6c7d07a126e1928c294498e11750284",
+                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/85d84a43050c11e6742faa17ff30312c4ff36343",
+                "reference": "85d84a43050c11e6742faa17ff30312c4ff36343",
                 "shasum": ""
             },
             "require": {
@@ -5340,7 +5340,6 @@
                 "phpstan/phpstan": "^1.2",
                 "phpunit/phpunit": "^9.5.10"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5360,9 +5359,9 @@
             "description": "Waffler client generator using openapi specs",
             "support": {
                 "issues": "https://github.com/waffler-io/opengen/issues",
-                "source": "https://github.com/waffler-io/opengen/tree/main"
+                "source": "https://github.com/waffler-io/opengen/tree/0.1.0"
             },
-            "time": "2021-12-24T17:23:15+00:00"
+            "time": "2021-12-24T17:16:32+00:00"
         },
         {
             "name": "waffler/waffler",
@@ -6833,12 +6832,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "24056282e3b410f77ee242133e8fee9abda4a9cd"
+                "reference": "a2639ddcc8462004e5061633adabe49d6fa2de55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/24056282e3b410f77ee242133e8fee9abda4a9cd",
-                "reference": "24056282e3b410f77ee242133e8fee9abda4a9cd",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a2639ddcc8462004e5061633adabe49d6fa2de55",
+                "reference": "a2639ddcc8462004e5061633adabe49d6fa2de55",
                 "shasum": ""
             },
             "require": {
@@ -6890,7 +6889,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-23T15:58:34+00:00"
+            "time": "2021-12-24T00:33:32+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -8264,7 +8263,6 @@
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
             "support": {
-                "issues": "https://github.com/sebastianbergmann/resource-operations/issues",
                 "source": "https://github.com/sebastianbergmann/resource-operations/tree/3.0.3"
             },
             "funding": [
@@ -9037,7 +9035,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "waffler/opengen": 20,
         "jetbrains/phpstorm-attributes": 20
     },
     "prefer-stable": false,
