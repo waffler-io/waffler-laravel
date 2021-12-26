@@ -12,7 +12,6 @@
 namespace Waffler\Laravel\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use Waffler\OpenGen\Generator;
 
 /**
@@ -60,6 +59,11 @@ class GenerateCode extends Command
      */
     private function convertNamespaceToPath(string $namespace): string
     {
+        if (! str_starts_with($namespace, 'App\\')) {
+            $this->error("The generated code namespace must be inside \"App\" namespace.");
+            exit(1);
+        }
+
         return app_path(str_replace('\\', '/', substr($namespace, 4)));
     }
 }
