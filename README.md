@@ -91,9 +91,10 @@ of generation options. See example 1 and example 2 below.
 ### The `code_generation.openapi_files.*.namespace` option:
 The generated clients will be put inside `code_generation.namespace` plus this option value.
 ```php
+'namespace' => 'App\\Clients',
 'openapi_files' => [
     resource_path('swagger/my-swagger-file.json') => [
-        'namespace' => 'MyCustomApi',
+        'namespace' => 'MyCustomApi', // Will be converted to App\Clients\MyCustomApi
     ],
 ],
 ```
@@ -116,7 +117,7 @@ This can be useful, for instance, when clients share the same options, like `bas
 This option still under development, but here you can ignore the generation of some method parameters.
 In the future, this will allow more configuration.
 
-In the example below, a `HeaderParam` with the name of `X-SOME-HEADER-NAME` will not be included in
+In the example below, a `HeaderParam` with the name of `Authorization` will not be included in
 the generated method parameters, because we already passed this argument in the `namespace_options` so
 the code generator don`t have to generate a method parameter for it.
 
