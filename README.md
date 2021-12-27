@@ -118,8 +118,8 @@ This option still under development, but here you can ignore the generation of s
 In the future, this will allow more configuration.
 
 In the example below, a `HeaderParam` with the name of `Authorization` will not be included in
-the generated method parameters, because we already passed this argument in the `namespace_options` so
-the code generator don`t have to generate a method parameter for it.
+the generated method parameters, because we already passed this argument in the `namespace_options`, so
+the code generator doesn't have to generate a method parameter for it.
 
 ```php
 'openapi_files' => [
