@@ -49,12 +49,17 @@ class WafflerServiceProvider extends ServiceProvider
 
     private function registerClients(): void
     {
-        $sharedConfig = config('waffler.shared_config', []);
+        $sharedConfig = config('waffler.global_options', []);
 
         foreach ($this->getClientsToLoad() as $clientInterface => $options) {
             $factory = fn ($app, $args) => Factory::make(
                 $clientInterface,
-                array_merge_recursive($sharedConfig, $options, $args[0] ?? [])
+                array_merge_recursive(
+                    $sharedConfig,
+                    $this->getConfigForNamespace($clientInterface),
+                    $options,
+                    $args[0] ?? []
+                )
             );
 
             $this->app->bind(
@@ -103,5 +108,36 @@ class WafflerServiceProvider extends ServiceProvider
     private static function getPackageConfigPath(): string
     {
         return __DIR__.'/../config/waffler.php';
+    }
+
+    /**
+     * @param string $fullyQualifiedInterfaceName
+     *
+     * @return array<string, mixed>
+     * @author ErickJMenezes <erickmenezes.dev@gmail.com>
+     */
+    private function getConfigForNamespace(string $fullyQualifiedInterfaceName): array
+    {
+        $baseOutputNamespace = config('waffler.code_generation.namespace');
+        $interfaceNamePieces = explode('\\', $fullyQualifiedInterfaceName);
+
+        foreach (config('waffler.code_generation.openapi_files', []) as $openApiFilePath => $config) {
+            if (is_int($openApiFilePath)) {
+                continue;
+            }
+
+            $searchedNamespace = $baseOutputNamespace . '\\' . ($config['namespace'] ?? '');
+
+            if (
+                $searchedNamespace.'\\'.$interfaceNamePieces[count($interfaceNamePieces) - 1]
+                !== $fullyQualifiedInterfaceName
+            ) {
+                continue;
+            }
+
+            return $config['namespace_options'] ?? [];
+        }
+
+        return [];
     }
 }

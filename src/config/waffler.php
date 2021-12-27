@@ -28,7 +28,7 @@ return [
     /*
      * Shared configuration to be used in every client.
      */
-    'shared_config' => [
+    'global_options' => [
         // 'headers' => ['X-Foo-Bar' => 'Baz']
     ],
 
@@ -62,6 +62,7 @@ return [
             // resource_path('swagger/your-swagger-file.json'),
             // resource_path('swagger/another-swagger-file.json') => [
             //     'namespace' => 'Extra\\Namespace',
+            //     'namespace_options' => ['base_uri' => 'https://share-namespace-config.example.com/api/'],
             //     'ignore' => [
             //         'parameters' => [
             //              'header' => ['X-SOME-HEADER-NAME']
