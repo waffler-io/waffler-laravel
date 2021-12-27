@@ -48,9 +48,9 @@ return [
     'code_generation' => [
 
         /*
-         * The base namespace that all interfaces will be generated.
+         * The base namespace where all interfaces will be generated.
          */
-        'namespace' => 'App\\Http\\Clients',
+        'namespace' => 'App\\Clients',
 
         /*
          * Path to openapi files to generate the code.
