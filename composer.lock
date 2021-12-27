@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc6be107851c18881285cbe941b71a44",
+    "content-hash": "b3cb6beb16f1ec9fffeab18cec3473e9",
     "packages": [
         {
             "name": "brick/math",
@@ -5261,16 +5261,16 @@
         },
         {
             "name": "waffler/opengen",
-            "version": "0.4.0",
+            "version": "0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffler-io/opengen.git",
-                "reference": "397476bc40fcd0a37ce66f3a86a532fcb22a3578"
+                "reference": "39b642c63801863448db03f9adad267cd7bd559f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/397476bc40fcd0a37ce66f3a86a532fcb22a3578",
-                "reference": "397476bc40fcd0a37ce66f3a86a532fcb22a3578",
+                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/39b642c63801863448db03f9adad267cd7bd559f",
+                "reference": "39b642c63801863448db03f9adad267cd7bd559f",
                 "shasum": ""
             },
             "require": {
@@ -5289,7 +5289,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Waffler\\OpenGen\\": "src/WafflerOpenGen"
+                    "Waffler\\OpenGen\\": "src/OpenGen/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5305,9 +5305,9 @@
             "description": "Waffler client generator using openapi specs",
             "support": {
                 "issues": "https://github.com/waffler-io/opengen/issues",
-                "source": "https://github.com/waffler-io/opengen/tree/0.4.0"
+                "source": "https://github.com/waffler-io/opengen/tree/0.4.2"
             },
-            "time": "2021-12-27T16:45:23+00:00"
+            "time": "2021-12-27T20:14:08+00:00"
         },
         {
             "name": "waffler/waffler",
