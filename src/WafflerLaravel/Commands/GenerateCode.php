@@ -21,7 +21,8 @@ use Waffler\OpenGen\Generator;
  */
 class GenerateCode extends Command
 {
-    protected $signature = 'waffler:generate-code';
+    protected $signature = 'waffler:generate-code 
+                            {--N|namespace=* : Generate just for the specified namespace.}';
 
     protected $description = 'Generate code using OpenAPI files.';
 
@@ -49,6 +50,13 @@ class GenerateCode extends Command
                 }
             }
 
+            if ($this->mustIgnoreNamespace($options['namespace'])) {
+                $this->comment("Ignoring namespace \"{$options['namespace']}\" due user filtering.");
+                continue;
+            }
+
+            $this->alert("Generating clients for \"{$options['namespace']}\" namespace.");
+
             $outputDir = $this->convertNamespaceToPath($options['namespace']);
             $filesOutput = $generator->fromOpenApiFile(
                 $pathToFile,
@@ -59,6 +67,9 @@ class GenerateCode extends Command
 
             $this->printGeneratedFiles($filesOutput);
         }
+
+        $this->newLine(2);
+        $this->info("All clients successfuly generated.");
 
         return true;
     }
@@ -88,7 +99,20 @@ class GenerateCode extends Command
     private function printGeneratedFiles(array $filesOutput): void
     {
         foreach ($filesOutput as $interfaceName => $outputFile) {
-            $this->info("Successfully generated interface \"$interfaceName\" in the path \"$outputFile\".");
+            $this->info("Successfully generated interface \"$interfaceName\" in the path \"$outputFile\".\n");
         }
+    }
+
+    /**
+     * @param string $namespace
+     *
+     * @return bool
+     * @author ErickJMenezes <erickmenezes.dev@gmail.com>
+     */
+    private function mustIgnoreNamespace(string $namespace): bool
+    {
+        $option = $this->option('namespace');
+        return !empty($option)
+            && !in_array($namespace, (array) $option, true);
     }
 }
