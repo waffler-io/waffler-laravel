@@ -50,12 +50,14 @@ class GenerateCode extends Command
             }
 
             $outputDir = $this->convertNamespaceToPath($options['namespace']);
-            $generator->fromOpenApiFile(
+            $filesOutput = $generator->fromOpenApiFile(
                 $pathToFile,
                 $outputDir, //@phpstan-ignore-line
                 $options['namespace'],
                 $options
             );
+
+            $this->printGeneratedFiles($filesOutput);
         }
 
         return true;
@@ -75,5 +77,18 @@ class GenerateCode extends Command
         }
 
         return app_path(str_replace('\\', '/', substr($namespace, 4)));
+    }
+
+    /**
+     * @param array<string, string> $filesOutput
+     *
+     * @return void
+     * @author ErickJMenezes <erickmenezes.dev@gmail.com>
+     */
+    private function printGeneratedFiles(array $filesOutput): void
+    {
+        foreach ($filesOutput as $interfaceName => $outputFile) {
+            $this->info("Successfully generated interface \"$interfaceName\" in the path \"$outputFile\".");
+        }
     }
 }
