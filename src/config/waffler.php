@@ -59,8 +59,15 @@ return [
          * Deeper Namespaces will create Deeper folders.
          */
         'openapi_files' => [
-            // __DIR__.'/path/to/your-swagger-file.json',
-            // __DIR__.'/path/to/another-openapi-file.json' => 'Extra\\Namespace',
+            // resource_path('swagger/your-swagger-file.json'),
+            // resource_path('swagger/another-swagger-file.json') => [
+            //     'namespace' => 'Extra\\Namespace',
+            //     'ignore' => [
+            //         'parameters' => [
+            //              'header' => ['X-SOME-HEADER-NAME']
+            //         ]
+            //     ]
+            // ],
         ]
     ]
 ];

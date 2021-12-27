@@ -27,7 +27,7 @@ class GenerateCode extends Command
 
     public function handle(): bool
     {
-        if (! config()->has('waffler')) {
+        if (!config()->has('waffler')) {
             $this->error('Waffler config file is not published. Use waffler:install command.');
             return false;
         }
@@ -35,17 +35,27 @@ class GenerateCode extends Command
         $generator = new Generator();
         $baseNamespace = config('waffler.code_generation.namespace');
 
-        foreach (config('waffler.code_generation.openapi_files') as $pathToFile => $extraNamespace) {
+        foreach (config('waffler.code_generation.openapi_files') as $pathToFile => $options) {
             if (is_int($pathToFile)) {
-                $pathToFile = $extraNamespace;
-                $extraNamespace = $baseNamespace;
+                $pathToFile = $options;
+                $options = [
+                    'namespace' => $baseNamespace
+                ];
             } else {
-                $extraNamespace = "$baseNamespace\\$extraNamespace";
+                if (isset($options['namespace'])) {
+                    $options['namespace'] = "$baseNamespace\\{$options['namespace']}";
+                } else {
+                    $options['namespace'] = $baseNamespace;
+                }
             }
 
-            $outputDir = $this->convertNamespaceToPath($extraNamespace);
-            //@phpstan-ignore-next-line
-            $generator->fromOpenApiFile($pathToFile, $outputDir, $extraNamespace);
+            $outputDir = $this->convertNamespaceToPath($options['namespace']);
+            $generator->fromOpenApiFile(
+                $pathToFile,
+                $outputDir, //@phpstan-ignore-line
+                $options['namespace'],
+                $options
+            );
         }
 
         return true;
@@ -59,7 +69,7 @@ class GenerateCode extends Command
      */
     private function convertNamespaceToPath(string $namespace): string
     {
-        if (! str_starts_with($namespace, 'App\\')) {
+        if (!str_starts_with($namespace, 'App\\')) {
             $this->error("The generated code namespace must be inside \"App\" namespace.");
             exit(1);
         }

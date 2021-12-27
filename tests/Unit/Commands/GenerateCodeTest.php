@@ -25,7 +25,9 @@ class GenerateCodeTest extends TestCase
     {
         config([
             'waffler.code_generation.openapi_files' => [
-                __DIR__.'/../../../vendor/waffler/opengen/tests/Fixtures/swagger-jsonplaceholder.json' => 'JsonPlaceholder'
+                __DIR__.'/../../../vendor/waffler/opengen/tests/Fixtures/swagger-jsonplaceholder.json' => [
+                    'namespace' => 'JsonPlaceholder'
+                ]
             ]
         ]);
 
