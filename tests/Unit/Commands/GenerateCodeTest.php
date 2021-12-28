@@ -11,6 +11,7 @@
 
 namespace Waffler\Laravel\Tests\Unit\Commands;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Waffler\Laravel\Tests\TestCase;
 
 /**
@@ -21,21 +22,32 @@ use Waffler\Laravel\Tests\TestCase;
  */
 class GenerateCodeTest extends TestCase
 {
+    private const OUTPUT_PATH = 'Clients/JsonPlaceholder';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $filesystem = new Filesystem();
+        if ($filesystem->exists(self::OUTPUT_PATH)) {
+            $filesystem->remove(self::OUTPUT_PATH);
+        }
+
+        $this->artisan('waffler:install');
+    }
+
     protected function getEnvironmentSetUp($app)
     {
-        $app->make('config')->set('waffler.code_generation.openapi_files', [
+        $app['config']->set('waffler.code_generation.openapi_files', [
             __DIR__.'/../../../vendor/waffler/opengen/tests/Fixtures/swagger-jsonplaceholder.json' => [
                 'namespace' => 'JsonPlaceholder'
             ]
         ]);
     }
 
-    public function testItMustGenerateClasses(): void
+    public function testItMustGenerateInterfaces(): void
     {
-        $this->artisan('waffler:install');
         $this->artisan('waffler:generate-code');
-        $id = 'App\Clients\JsonPlaceholder\UserClientInterface';
-        self::assertTrue($this->app->has($id));
-        self::assertTrue(in_array($id, $this->app['config']->get('waffler.auto_generated_clients')));
+        self::assertFileExists($this->app->path(self::OUTPUT_PATH.'/UserClientInterface.php'));
     }
 }
