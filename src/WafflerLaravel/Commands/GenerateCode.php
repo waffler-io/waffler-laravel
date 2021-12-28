@@ -35,6 +35,7 @@ class GenerateCode extends Command
 
         $generator = new Generator();
         $baseNamespace = config('waffler.code_generation.namespace');
+        $cacheArray = [];
 
         foreach (config('waffler.code_generation.openapi_files') as $pathToFile => $options) {
             if (is_int($pathToFile)) {
@@ -64,11 +65,16 @@ class GenerateCode extends Command
                 $options['namespace'],
                 $options
             );
+            if ($options['auto_bind'] ?? true) {
+                $cacheArray[$options['namespace']] = $filesOutput;
+            }
 
             $this->printGeneratedFiles($filesOutput);
         }
 
+
         $this->newLine(2);
+        $this->saveCacheArray($cacheArray);
         $this->info("All clients successfuly generated.");
 
         return true;
@@ -114,5 +120,42 @@ class GenerateCode extends Command
         $option = $this->option('namespace');
         return !empty($option)
             && !in_array($namespace, (array) $option, true);
+    }
+
+    /**
+     * @param array<int|string, array<string, string>> $cache
+     *
+     * @return void
+     * @author ErickJMenezes <erickmenezes.dev@gmail.com>
+     */
+    private function saveCacheArray(array $cache): void
+    {
+        $fullyQualifiedNames = [];
+        foreach ($cache as $namespace => $namesAndPaths) {
+            foreach ($namesAndPaths as $name => $path) {
+                $fullyQualifiedNames[] = "$namespace\\$name";
+            }
+        }
+        $currentFileContents = (string)file_get_contents(config_path('waffler.php'));
+        $exportedCache = var_export($fullyQualifiedNames, true);
+        $exportedCache = preg_replace(
+            ['/\s\s(\d)/', '/\)/', '/array\s*\(/', '/\)/', '/\d\s*=>\s*/'],
+            ['        $1', '    )', '[', ']', ''],
+            (string)$exportedCache
+        );
+        $replacement = "'auto_generated_clients' => $exportedCache";
+        $replacementCount = 0;
+        $result = preg_replace(
+            '#\'auto_generated_clients\'\s*=>\s*\[[\w\'\\\,\d=>\s_\n]*\]#',
+            $replacement,
+            $currentFileContents,
+            1,
+            $replacementCount
+        );
+        if ($replacementCount !== 1) {
+            $this->error("The array key \"auto_generated_clients\" was not found in your waffler.php config file, please fix it and re-run the command.");
+            exit(1);
+        }
+        file_put_contents(config_path('waffler.php'), $result);
     }
 }

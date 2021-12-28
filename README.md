@@ -47,6 +47,15 @@ An array of clients to be registered as singletons.
 ],
 ```
 
+### The `auto_generated_clients` array:
+An array of auto generated classes. Do not modify it, the contents of this array is auto-generated when you run
+the `waffler:generate-code` command.
+```php
+'auto_generated_clients' => [
+    'App\Clients\FooBarClientInterface',
+],
+```
+
 ### The `code_generation` option:
 This package also can generate the client interfaces if you have a swagger or another open-api spec file.
 ```php
@@ -169,6 +178,17 @@ Ignorable parameter types are:
 - query
 - body
 - formData
+
+### The `code_generation.openapi_files.*.auto_bind` option:
+Automatic register the generated interfaces in the service container.
+Default value is `true`.
+```php
+'openapi_files' => [
+    resource_path('swagger/my-swagger-file.json') => [
+        'auto_bind' => false
+    ],
+],
+```
 
 ## Contributions:
 Work in progress.

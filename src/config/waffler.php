@@ -70,5 +70,10 @@ return [
             //     ]
             // ],
         ]
-    ]
+    ],
+
+    /*
+     * Do not modify the lines below.
+     */
+    'auto_generated_clients' => [],
 ];
