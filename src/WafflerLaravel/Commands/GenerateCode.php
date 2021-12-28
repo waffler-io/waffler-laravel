@@ -139,7 +139,7 @@ class GenerateCode extends Command
         $currentFileContents = (string)file_get_contents(config_path('waffler.php'));
         $exportedCache = var_export($fullyQualifiedNames, true);
         $exportedCache = preg_replace(
-            ['/\s\s(\d)/', '/\)/', '/array\s*\(/', '/\)/', '/\d\s*=>\s*/'],
+            ['/\s\s(\d)/', '/\)/', '/array\s*\(/', '/\)/', '/\d*\s*=>\s*/'],
             ['        $1', '    )', '[', ']', ''],
             (string)$exportedCache
         );
