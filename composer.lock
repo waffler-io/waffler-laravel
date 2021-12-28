@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3cb6beb16f1ec9fffeab18cec3473e9",
+    "content-hash": "f1db459095229f419e26c9590da60cba",
     "packages": [
         {
             "name": "brick/math",
@@ -5261,16 +5261,16 @@
         },
         {
             "name": "waffler/opengen",
-            "version": "0.4.2",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffler-io/opengen.git",
-                "reference": "39b642c63801863448db03f9adad267cd7bd559f"
+                "reference": "f754d343bbc6de12374c332dd5a0b1697434826d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/39b642c63801863448db03f9adad267cd7bd559f",
-                "reference": "39b642c63801863448db03f9adad267cd7bd559f",
+                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/f754d343bbc6de12374c332dd5a0b1697434826d",
+                "reference": "f754d343bbc6de12374c332dd5a0b1697434826d",
                 "shasum": ""
             },
             "require": {
@@ -5305,9 +5305,9 @@
             "description": "Waffler client generator using openapi specs",
             "support": {
                 "issues": "https://github.com/waffler-io/opengen/issues",
-                "source": "https://github.com/waffler-io/opengen/tree/0.4.2"
+                "source": "https://github.com/waffler-io/opengen/tree/0.5.0"
             },
-            "time": "2021-12-27T20:14:08+00:00"
+            "time": "2021-12-28T11:43:27+00:00"
         },
         {
             "name": "waffler/waffler",
@@ -8373,16 +8373,16 @@
         },
         {
             "name": "spatie/laravel-ray",
-            "version": "1.27.0",
+            "version": "1.27.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ray.git",
-                "reference": "b0c3d13d17ea430e3cf02495192b6ed99f0f7615"
+                "reference": "63facbd443b3ba0e920054ca7f48a08e2870b740"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/b0c3d13d17ea430e3cf02495192b6ed99f0f7615",
-                "reference": "b0c3d13d17ea430e3cf02495192b6ed99f0f7615",
+                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/63facbd443b3ba0e920054ca7f48a08e2870b740",
+                "reference": "63facbd443b3ba0e920054ca7f48a08e2870b740",
                 "shasum": ""
             },
             "require": {
@@ -8439,7 +8439,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-ray/issues",
-                "source": "https://github.com/spatie/laravel-ray/tree/1.27.0"
+                "source": "https://github.com/spatie/laravel-ray/tree/1.27.2"
             },
             "funding": [
                 {
@@ -8451,7 +8451,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-12-26T19:28:33+00:00"
+            "time": "2021-12-27T21:05:04+00:00"
         },
         {
             "name": "spatie/macroable",
