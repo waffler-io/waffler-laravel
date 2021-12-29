@@ -26,6 +26,12 @@ class GenerateCode extends Command
 
     protected $description = 'Generate code using OpenAPI files.';
 
+    /**
+     * @throws \cebe\openapi\exceptions\IOException
+     * @throws \cebe\openapi\exceptions\TypeErrorException
+     * @throws \cebe\openapi\exceptions\UnresolvableReferenceException
+     * @throws \cebe\openapi\json\InvalidJsonPointerSyntaxException
+     */
     public function handle(): bool
     {
         if (!config()->has('waffler')) {
@@ -61,7 +67,7 @@ class GenerateCode extends Command
             $outputDir = $this->convertNamespaceToPath($options['namespace']);
             $filesOutput = $generator->fromOpenApiFile(
                 $pathToFile,
-                $outputDir, //@phpstan-ignore-line
+                $outputDir,
                 $options['namespace'],
                 $options
             );
