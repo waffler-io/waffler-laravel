@@ -13,6 +13,7 @@ namespace Waffler\Laravel\Commands;
 
 use Illuminate\Console\Command;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 use Waffler\OpenGen\Generator;
 
 /**
@@ -24,7 +25,8 @@ class GenerateCode extends Command
 {
     protected $signature = 'waffler:generate-code 
                             {--N|namespace=* : Generate just for the specified client namespace.}
-                            {--r|regenerate : Regenerates the cache array.}';
+                            {--r|regenerate : Regenerates the cache array.}
+                            {--D|check-directory : Generates if the namespace directory does not exists.}';
 
     protected $description = 'Generate code using OpenAPI files.';
 
@@ -38,7 +40,7 @@ class GenerateCode extends Command
     {
         if (!config()->has('waffler')) {
             $this->error('Waffler config file is not published. Use waffler:install command.');
-            return false;
+            return 0;
         }
 
         $generator = new Generator();
@@ -47,7 +49,7 @@ class GenerateCode extends Command
 
         foreach (config('waffler.code_generation.openapi_files') as $pathToFile => $options) {
             if ($this->mustIgnoreNamespace($options['namespace'])) {
-                $this->comment("Ignoring namespace \"{$options['namespace']}\" due user filtering.");
+                $this->comment("Ignoring namespace \"{$options['namespace']}\".");
                 continue;
             }
 
@@ -96,12 +98,16 @@ class GenerateCode extends Command
      */
     private function convertNamespaceToPath(string $namespace): string
     {
-        if (!str_starts_with($namespace, 'App\\')) {
+        if ($namespace !== 'App' && !str_starts_with($namespace, 'App\\')) {
             $this->error("The generated code namespace must be inside \"App\" namespace.");
             exit(1);
         }
 
-        return app_path(str_replace('\\', '/', substr($namespace, 4)));
+        $pieces = explode('\\', $namespace);
+
+        unset($pieces[0]);
+
+        return app_path(implode(DIRECTORY_SEPARATOR, $pieces));
     }
 
     /**
@@ -129,8 +135,8 @@ class GenerateCode extends Command
     private function mustIgnoreNamespace(string $namespace): bool
     {
         $option = $this->option('namespace');
-        return !empty($option)
-            && !in_array($namespace, (array) $option, true);
+        return (!empty($option) && !in_array($namespace, (array) $option, true))
+            || ($this->option('check-directory') && $this->namespaceExists($namespace));
     }
 
     /**
@@ -175,5 +181,12 @@ class GenerateCode extends Command
             exit(1);
         }
         file_put_contents(config_path('waffler.php'), $result);
+    }
+
+    private function namespaceExists(string $namespace): bool
+    {
+        return (new Filesystem())->exists(
+            $this->convertNamespaceToPath(config('waffler.code_generation.namespace').'\\'.$namespace)
+        );
     }
 }
