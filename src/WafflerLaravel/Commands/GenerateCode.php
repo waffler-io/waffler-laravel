@@ -12,6 +12,7 @@
 namespace Waffler\Laravel\Commands;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 use Waffler\OpenGen\Generator;
 
 /**
@@ -22,7 +23,8 @@ use Waffler\OpenGen\Generator;
 class GenerateCode extends Command
 {
     protected $signature = 'waffler:generate-code 
-                            {--N|namespace=* : Generate just for the specified namespace.}';
+                            {--N|namespace=* : Generate just for the specified client namespace.}
+                            {--r|regenerate : Regenerates the cache array.}';
 
     protected $description = 'Generate code using OpenAPI files.';
 
@@ -44,6 +46,11 @@ class GenerateCode extends Command
         $cacheArray = [];
 
         foreach (config('waffler.code_generation.openapi_files') as $pathToFile => $options) {
+            if ($this->mustIgnoreNamespace($options['namespace'])) {
+                $this->comment("Ignoring namespace \"{$options['namespace']}\" due user filtering.");
+                continue;
+            }
+
             if (is_int($pathToFile)) {
                 $pathToFile = $options;
                 $options = [
@@ -55,11 +62,6 @@ class GenerateCode extends Command
                 } else {
                     $options['namespace'] = $baseNamespace;
                 }
-            }
-
-            if ($this->mustIgnoreNamespace($options['namespace'])) {
-                $this->comment("Ignoring namespace \"{$options['namespace']}\" due user filtering.");
-                continue;
             }
 
             $this->alert("Generating clients for \"{$options['namespace']}\" namespace.");
@@ -139,14 +141,21 @@ class GenerateCode extends Command
      */
     private function saveCacheArray(array $cache): void
     {
-        $fullyQualifiedNames = [];
+        $fullyQualifiedNames = $this->option('regenerate')
+            ? []
+            : config('waffler.auto_generated_clients', false);
+
+        if (!is_array($fullyQualifiedNames)) {
+            throw new RuntimeException("The \"auto_generated_clients\" array was not found in the waffler.php config file. Please create and avoid modifying it.");
+        }
+
         foreach ($cache as $namespace => $namesAndPaths) {
             foreach ($namesAndPaths as $name => $path) {
                 $fullyQualifiedNames[] = "$namespace\\$name";
             }
         }
         $currentFileContents = (string)file_get_contents(config_path('waffler.php'));
-        $exportedCache = var_export($fullyQualifiedNames, true);
+        $exportedCache = var_export(array_unique($fullyQualifiedNames), true);
         $exportedCache = preg_replace(
             ['/\s\s(\d)/', '/\)/', '/array\s*\(/', '/\)/', '/\d*\s*=>\s*/'],
             ['        $1', '    )', '[', ']', ''],
