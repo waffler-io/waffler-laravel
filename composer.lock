@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2eefb136c1948f17f3a67a150773986c",
+    "content-hash": "d0e69407186fcab79213b8909b101b58",
     "packages": [
         {
             "name": "brick/math",
@@ -5261,16 +5261,16 @@
         },
         {
             "name": "waffler/opengen",
-            "version": "0.6.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffler-io/opengen.git",
-                "reference": "7a9f54e25484e2aff3fcfec3b16be166d543861e"
+                "reference": "6843371c3348a6e120b304878e82bf9082f49e96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/7a9f54e25484e2aff3fcfec3b16be166d543861e",
-                "reference": "7a9f54e25484e2aff3fcfec3b16be166d543861e",
+                "url": "https://api.github.com/repos/waffler-io/opengen/zipball/6843371c3348a6e120b304878e82bf9082f49e96",
+                "reference": "6843371c3348a6e120b304878e82bf9082f49e96",
                 "shasum": ""
             },
             "require": {
@@ -5305,9 +5305,9 @@
             "description": "Waffler client generator using openapi specs",
             "support": {
                 "issues": "https://github.com/waffler-io/opengen/issues",
-                "source": "https://github.com/waffler-io/opengen/tree/0.6.0"
+                "source": "https://github.com/waffler-io/opengen/tree/0.7.0"
             },
-            "time": "2021-12-29T19:56:25+00:00"
+            "time": "2021-12-30T13:49:58+00:00"
         },
         {
             "name": "waffler/waffler",
