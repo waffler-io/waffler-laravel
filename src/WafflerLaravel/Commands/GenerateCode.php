@@ -111,7 +111,10 @@ class GenerateCode extends Command
     private function printGeneratedFiles(array $filesOutput): void
     {
         foreach ($filesOutput as $interfaceName => $outputFile) {
-            $this->info("Successfully generated interface \"$interfaceName\" in the path \"$outputFile\".\n");
+            $this->info(
+                "Successfully generated interface \"$interfaceName\" in the path \"$outputFile\".\n",
+                'v'
+            );
         }
     }
 
