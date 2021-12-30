@@ -34,7 +34,7 @@ class GenerateCode extends Command
      * @throws \cebe\openapi\exceptions\UnresolvableReferenceException
      * @throws \cebe\openapi\json\InvalidJsonPointerSyntaxException
      */
-    public function handle(): bool
+    public function handle(): int
     {
         if (!config()->has('waffler')) {
             $this->error('Waffler config file is not published. Use waffler:install command.');
@@ -85,7 +85,7 @@ class GenerateCode extends Command
         $this->saveCacheArray($cacheArray);
         $this->info("All clients successfuly generated.");
 
-        return true;
+        return 0;
     }
 
     /**
