@@ -11,9 +11,9 @@
 
 namespace Waffler\Laravel\Tests\Unit;
 
-use Waffler\Attributes\Verbs\Get;
 use Waffler\Laravel\Tests\TestCase;
 use Waffler\Laravel\WafflerServiceProvider;
+use Waffler\Laravel\Tests\Fixtures\Interfaces\FooClientInterface;
 
 /**
  * Class ServiceProviderTest.
@@ -26,10 +26,10 @@ class ServiceProviderTest extends TestCase
     protected function getPackageProviders($app): array
     {
         $app['config']->set('waffler.clients', [
-            FooClient::class => ['base_uri' => 'localhost']
+            FooClientInterface::class => ['base_uri' => 'localhost']
         ]);
         $app['config']->set('waffler.aliases', [
-            FooClient::class => 'waffler.foo'
+            FooClientInterface::class => 'waffler.foo'
         ]);
         return parent::getPackageProviders($app);
     }
@@ -41,13 +41,7 @@ class ServiceProviderTest extends TestCase
 
     public function test_it_must_register_the_client_in_the_service_container(): void
     {
-        self::assertInstanceOf(FooClient::class, $this->app->make(FooClient::class));
-        self::assertInstanceOf(FooClient::class, $this->app->make('waffler.foo'));
+        self::assertInstanceOf(FooClientInterface::class, $this->app->make(FooClientInterface::class));
+        self::assertInstanceOf(FooClientInterface::class, $this->app->make('waffler.foo'));
     }
-}
-
-interface FooClient
-{
-    #[Get('/foo')]
-    public function getFoo(): array;
 }

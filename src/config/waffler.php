@@ -42,6 +42,8 @@ return [
         // 'App\\Clients\\MyClient',
     ],
 
+    // !!!! EXPERIMENTAL CODE GENERATION FEATURE, USE AT YOUR OWN RISK. !!!!
+
     /*
      * Generate code using your swagger or another openapi files.
      */
