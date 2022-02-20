@@ -47,7 +47,9 @@ class GenerateCodeTest extends TestCase
 
     public function testItMustGenerateInterfaces(): void
     {
-        $this->artisan('waffler:generate-code');
+        $this->artisan('waffler:generate-code', [
+            '--allow-continue' => true
+        ]);
         self::assertFileExists($this->app->path(self::OUTPUT_PATH.'/UserClientInterface.php'));
     }
 }

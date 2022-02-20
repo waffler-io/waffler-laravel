@@ -106,7 +106,6 @@ class WafflerServiceProvider extends ServiceProvider
             }
         }
 
-        // @phpstan-ignore-next-line
         return $normalizedArray;
     }
 

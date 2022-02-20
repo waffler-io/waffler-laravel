@@ -26,7 +26,8 @@ class GenerateCode extends Command
     protected $signature = 'waffler:generate-code 
                             {--N|namespace=* : Generate just for the specified client namespace.}
                             {--r|regenerate : Regenerates the cache array.}
-                            {--D|check-directory : Generates if the namespace directory does not exists.}';
+                            {--D|check-directory : Generates if the namespace directory does not exists.}
+                            {--y|allow-continue : Agree that this is an experimental feature and know the risks.}';
 
     protected $description = 'Generate code using OpenAPI files.';
 
@@ -41,6 +42,14 @@ class GenerateCode extends Command
         if (!config()->has('waffler')) {
             $this->error('Waffler config file is not published. Use waffler:install command.');
             return 0;
+        }
+
+        if (! $this->option('allow-continue')) {
+            $response = $this->askWithCompletion('Are you sure to continue and use this experimental feature?', ['y', 'n'], 'y');
+
+            if ($response !== 'y') {
+                return 0;
+            }
         }
 
         $generator = new Generator();
