@@ -24,7 +24,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}-v2-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: composer install --prefer-dist --no-progress --no-cache
         if: steps.composer-cache.outputs.cache-hit != 'true'
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
