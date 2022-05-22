@@ -108,6 +108,19 @@ The generated clients will be put inside `code_generation.namespace` plus this o
 ],
 ```
 
+### The `code_generation.openapi_files.*.spec_type` option:
+Indicates the specification file schema type. It can be either `openapi` or `swagger`.
+The default value is `openapi`
+```php
+'namespace' => 'App\\Clients',
+'openapi_files' => [
+    resource_path('swagger/my-swagger-file.json') => [
+        'namespace' => 'MyCustomApi',
+        'spec_type' => 'swagger',
+    ],
+],
+```
+
 ### The `code_generation.openapi_files.*.namespace_options` option:
 The generated clients under the configured namespace will share this guzzle configurations.
 This can be useful, for instance, when clients share the same options, like `base_uri`.

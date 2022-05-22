@@ -14,7 +14,9 @@ namespace Waffler\Laravel\Commands;
 use Illuminate\Console\Command;
 use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
-use Waffler\OpenGen\Generator;
+use Waffler\OpenGen\Adapters\OpenApiV3Adapter;
+use Waffler\OpenGen\Adapters\SwaggerV2Adapter;
+use Waffler\OpenGen\ClientGenerator;
 
 /**
  * Class GenerateCode.
@@ -27,7 +29,7 @@ class GenerateCode extends Command
                             {--N|namespace=* : Generate just for the specified client namespace.}
                             {--r|regenerate : Regenerates the cache array.}
                             {--D|check-directory : Generates if the namespace directory does not exists.}
-                            {--y|allow-continue : Agree that this is an experimental feature and know the risks.}';
+                            {--y|allow-continue : Agree that this is an experimental feature and you know the risks.}';
 
     protected $description = 'Generate code using OpenAPI files.';
 
@@ -52,7 +54,6 @@ class GenerateCode extends Command
             }
         }
 
-        $generator = new Generator();
         $baseNamespace = config('waffler.code_generation.namespace');
         $cacheArray = [];
 
@@ -74,16 +75,24 @@ class GenerateCode extends Command
                     $options['namespace'] = $baseNamespace;
                 }
             }
+            $options['file_format'] = $options['file_format'] ?? $this->guessFileFormatFromPath($pathToFile);
+            $options['spec_type'] ??= 'openapi';
+
+            $adapter = $options['spec_type'] === 'openapi' ? OpenApiV3Adapter::class : SwaggerV2Adapter::class;
+            $method = $options['file_format'] === 'yaml' ? 'generateFromYamlFile' : 'generateFromJsonFile';
 
             $this->alert("Generating clients for \"{$options['namespace']}\" namespace.");
 
             $outputDir = $this->convertNamespaceToPath($options['namespace']);
-            $filesOutput = $generator->fromOpenApiFile(
-                $pathToFile,
-                $outputDir,
-                $options['namespace'],
-                $options
-            );
+            $filesOutput = (new ClientGenerator(new $adapter(
+                $options['namespace'] ?? '',
+                $options['interface_suffix'] ?? 'ClientInterface',
+                $options['ignore']['parameters'] ?? [],
+                $options['ignore']['methods'] ?? [],
+                $options['remove_method_prefix'] ?? null,
+            )))
+                ->$method($pathToFile, $outputDir);
+
             if ($options['auto_bind'] ?? true) {
                 $cacheArray[$options['namespace']] = $filesOutput;
             }
@@ -197,5 +206,16 @@ class GenerateCode extends Command
         return (new Filesystem())->exists(
             $this->convertNamespaceToPath(config('waffler.code_generation.namespace').'\\'.$namespace)
         );
+    }
+
+    private function guessFileFormatFromPath(mixed $pathToFile): string
+    {
+        if (str_ends_with($pathToFile, '.json')) {
+            return 'json';
+        } elseif (str_ends_with($pathToFile, '.yml') || str_ends_with($pathToFile, '.yaml')) {
+            return 'yaml';
+        } else {
+            throw new RuntimeException("The file format could not be guessed from the path \"$pathToFile\".");
+        }
     }
 }

@@ -40,16 +40,17 @@ class GenerateCodeTest extends TestCase
     {
         $app['config']->set('waffler.code_generation.openapi_files', [
             __DIR__.'/../../../vendor/waffler/opengen/tests/Fixtures/swagger-jsonplaceholder.json' => [
-                'namespace' => 'JsonPlaceholder'
+                'namespace' => 'JsonPlaceholder',
             ]
         ]);
     }
 
     public function testItMustGenerateInterfaces(): void
     {
-        $this->artisan('waffler:generate-code', [
+        $returnCode = $this->artisan('waffler:generate-code', [
             '--allow-continue' => true
         ]);
+        $returnCode->assertSuccessful();
         self::assertFileExists($this->app->path(self::OUTPUT_PATH.'/UserClientInterface.php'));
     }
 }

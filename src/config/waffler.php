@@ -63,6 +63,8 @@ return [
         'openapi_files' => [
             // resource_path('swagger/your-swagger-file.json'),
             // resource_path('swagger/another-swagger-file.json') => [
+            //     'file_format' => 'yaml', // json or yaml. If not passed, it will be guessed from the file extension.
+            //     'spec_type' => 'openapi', // openapi or swagger. The default is openapi.
             //     'namespace' => 'Extra\\Namespace',
             //     'namespace_options' => ['base_uri' => 'https://share-namespace-config.example.com/api/'],
             //     'ignore' => [
