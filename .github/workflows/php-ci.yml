@@ -28,12 +28,10 @@ jobs:
           restore-keys: |
             v1-${{ runner.os }}-composer-
 
-      - name: Remove composer cache
-        run: rm -rf ${{ steps.composer-cache.outputs.dir }}
-        if: steps.composer-cache.outputs.cache-hit != 'true'
-
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-cache
+        run: |
+          composer update --dry-run --no-progress
+          composer install --prefer-dist --no-progress --no-cache
         if: steps.composer-cache.outputs.cache-hit != 'true'
 
       - name: Run test suite
