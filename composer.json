@@ -3,18 +3,17 @@
   "description": "Laravel wrapper for waffler/waffler",
   "type": "library",
   "require": {
-    "php": "^8.0",
-    "waffler/waffler": "^1.1.1",
-    "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0",
-    "waffler/opengen": "^1.0.0"
+    "php": "^8.4",
+    "waffler/waffler": "^3.0.1",
+    "illuminate/support": "^12.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.3",
-    "phpunit/phpunit": "^7.0 || ^8.5.21 || ^9.0",
+    "phpunit/phpunit": "^11.0",
     "jetbrains/phpstorm-attributes": "dev-master",
-    "friendsofphp/php-cs-fixer": "^3.4",
-    "orchestra/testbench": "^6.0",
-    "vimeo/psalm": "^4.21"
+    "friendsofphp/php-cs-fixer": "^v3.68.5",
+    "orchestra/testbench": "^v10.4.0",
+    "vimeo/psalm": "^6.4.0"
   },
   "license": "MIT",
   "autoload": {

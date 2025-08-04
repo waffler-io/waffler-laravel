@@ -11,6 +11,8 @@
 
 namespace Waffler\Laravel\Tests\Unit;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Override;
 use Waffler\Laravel\Tests\TestCase;
 use Waffler\Laravel\WafflerServiceProvider;
 use Waffler\Laravel\Tests\Fixtures\Interfaces\FooClientInterface;
@@ -23,6 +25,7 @@ use Waffler\Laravel\Tests\Fixtures\Interfaces\FooClientInterface;
  */
 class ServiceProviderTest extends TestCase
 {
+    #[Override]
     protected function getPackageProviders($app): array
     {
         $app['config']->set('waffler.clients', [
@@ -39,6 +42,9 @@ class ServiceProviderTest extends TestCase
         self::assertTrue($this->app->providerIsLoaded(WafflerServiceProvider::class));
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function test_it_must_register_the_client_in_the_service_container(): void
     {
         self::assertInstanceOf(FooClientInterface::class, $this->app->make(FooClientInterface::class));
