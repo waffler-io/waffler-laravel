@@ -13,6 +13,10 @@ namespace Waffler\Laravel\Tests\Unit;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Override;
+use PHPUnit\Framework\Attributes\Test;
+use Waffler\Laravel\Commands\WafflerClearCommand;
+use Waffler\Laravel\Commands\WafflerInstallCommand;
+use Waffler\Laravel\Commands\WafflerCacheCommand;
 use Waffler\Laravel\Tests\TestCase;
 use Waffler\Laravel\WafflerServiceProvider;
 use Waffler\Laravel\Tests\Fixtures\Interfaces\FooClientInterface;
@@ -21,7 +25,6 @@ use Waffler\Laravel\Tests\Fixtures\Interfaces\FooClientInterface;
  * Class ServiceProviderTest.
  *
  * @author ErickJMenezes <erickmenezes.dev@gmail.com>
- * @coversNothing
  */
 class ServiceProviderTest extends TestCase
 {
@@ -34,10 +37,14 @@ class ServiceProviderTest extends TestCase
         $app['config']->set('waffler.aliases', [
             FooClientInterface::class => 'waffler.foo'
         ]);
+        $app['config']->set('waffler.singletons', [
+            FooClientInterface::class,
+        ]);
         return parent::getPackageProviders($app);
     }
 
-    public function test_it_must_load_the_service_provider(): void
+    #[Test]
+    public function it_must_load_the_service_provider(): void
     {
         self::assertTrue($this->app->providerIsLoaded(WafflerServiceProvider::class));
     }
@@ -45,9 +52,25 @@ class ServiceProviderTest extends TestCase
     /**
      * @throws BindingResolutionException
      */
-    public function test_it_must_register_the_client_in_the_service_container(): void
+    #[Test]
+    public function it_must_register_the_client_in_the_service_container(): void
     {
         self::assertInstanceOf(FooClientInterface::class, $this->app->make(FooClientInterface::class));
         self::assertInstanceOf(FooClientInterface::class, $this->app->make('waffler.foo'));
+    }
+
+    #[Test]
+    public function it_must_register_the_client_as_a_singleton(): void
+    {
+        self::assertSame($this->app->make(FooClientInterface::class), $this->app->make(FooClientInterface::class));
+        self::assertSame($this->app->make(FooClientInterface::class), $this->app->make('waffler.foo'));
+    }
+
+    #[Test]
+    public function it_must_register_the_commands(): void
+    {
+        self::assertTrue($this->app->runningInConsole());
+        self::assertTrue($this->app->has(WafflerClearCommand::class));
+        self::assertTrue($this->app->has(WafflerCacheCommand::class));
     }
 }

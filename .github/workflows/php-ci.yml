@@ -11,31 +11,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP with pre-release PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl
+          tools: composer:v2
+          coverage: xdebug
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
-      - name: Get Composer Cache Directory
+      - name: Cache Composer packages
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: v1-${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: vendor
+          key: ${{ runner.os }}-php-vendor-cache-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            v1-${{ runner.os }}-composer-
+            ${{ runner.os }}-php-vendor-cache
 
       - name: Install dependencies
-        run: |
-          composer update --dry-run --no-progress
-          composer install --prefer-dist --no-progress --no-cache
-        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress
 
       - name: Run test suite
         run: composer run phpunit
 
-      - name: Run static analyis
-        run: composer run psalm
+      - name: Run static analysis
+        run: composer run phpstan

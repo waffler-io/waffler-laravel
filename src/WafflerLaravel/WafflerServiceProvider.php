@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Waffler.
  *
@@ -14,8 +16,10 @@ namespace Waffler\Laravel;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Override;
-use RuntimeException;
-use Waffler\Waffler\Client\Contracts\FactoryInterface;
+use Waffler\Laravel\Commands\WafflerCacheCommand;
+use Waffler\Laravel\Commands\WafflerClearCommand;
+use Waffler\Laravel\DirectoryResolvers\DefaultDirectoryResolver;
+use Waffler\Laravel\DirectoryResolvers\DirectoryResolverInterface;
 use Waffler\Waffler\Client\Factory;
 
 /**
@@ -29,10 +33,12 @@ class WafflerServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(self::getPackageConfigPath(), 'waffler');
-
-        $this->app->singleton(FactoryInterface::class, fn() => Factory::default());
-        $this->app->alias(FactoryInterface::class, 'waffler.factory');
-
+        $this->app->bind(Factory::class, fn () => Factory::default());
+        $this->app->bind(DirectoryResolverInterface::class, DefaultDirectoryResolver::class);
+        $this->app->bind(ClientListRetriever::class);
+        $this->app->alias(DirectoryResolverInterface::class, 'waffler.directory-resolver');
+        $this->app->alias(ClientListRetriever::class, 'waffler.client-list-retriever');
+        $this->app->alias(Factory::class, 'waffler.factory');
         $this->registerClients();
     }
 
@@ -41,19 +47,20 @@ class WafflerServiceProvider extends ServiceProvider
         if (!$this->app->runningInConsole()) {
             return;
         }
-
         $this->publishes([
             self::getPackageConfigPath() => config_path('waffler.php'),
         ], 'waffler-config');
+        $this->registerCommands();
     }
 
     private function registerClients(): void
     {
         $sharedConfig = config('waffler.global_options', []);
+        $clientListRetriever = $this->app->make(ClientListRetriever::class);
 
-        foreach ($this->getClientsToLoad() as $clientInterface => $options) {
+        foreach ($clientListRetriever->clients as $clientInterface => $options) {
             $factory = fn (Application $app, array $args) => $app
-                ->make(FactoryInterface::class)
+                ->make(Factory::class)
                 ->make(
                     $clientInterface,
                     array_merge_recursive(
@@ -76,38 +83,42 @@ class WafflerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Retrieves the clients to be registered.
-     *
-     * @return array<class-string, array<string, mixed>>
-     * @author ErickJMenezes <erickmenezes.dev@gmail.com>
-     */
-    private function getClientsToLoad(): array
-    {
-        /** @var array<class-string|int, class-string|array<string, mixed>> $clients */
-        $clients = config('waffler.clients', []);
-
-        /** @var array<class-string, array<string, mixed>> $normalizedArray */
-        $normalizedArray = [];
-
-        foreach ($clients as $classStringOrIndex => $classStringOrOptions) {
-            if (is_string($classStringOrIndex) && is_array($classStringOrOptions)) {
-                $normalizedArray[$classStringOrIndex] = $classStringOrOptions;
-            } elseif (is_string($classStringOrOptions)) {
-                $normalizedArray[$classStringOrOptions] = [];
-            } else {
-                throw new RuntimeException("The waffler config file is invalid. The type of 'clients' must match array<class-string, array<string, mixed>>|array<class-string>");
-            }
-        }
-
-        return $normalizedArray;
-    }
-
-    /**
      * @return non-empty-string
      * @author ErickJMenezes <erickmenezes.dev@gmail.com>
      */
     private static function getPackageConfigPath(): string
     {
         return __DIR__.'/../config/waffler.php';
+    }
+
+    private function registerCommands(): void
+    {
+        $this->optimizes(
+            'waffler:cache',
+            'waffler:clear',
+        );
+        $this->registerWafflerOptimizeCommand();
+        $this->registerWafflerClearCommand();
+        $this->commands([
+            WafflerCacheCommand::class,
+            WafflerClearCommand::class,
+        ]);
+    }
+
+    private function registerWafflerOptimizeCommand(): void
+    {
+        $this->app->bind(WafflerCacheCommand::class, function (Application $app) {
+            return new WafflerCacheCommand(
+                $app['waffler.client-list-retriever'],
+                $app['waffler.factory'],
+            );
+        });
+    }
+
+    private function registerWafflerClearCommand(): void
+    {
+        $this->app->bind(WafflerClearCommand::class, function (Application $app) {
+            return new WafflerClearCommand($app['waffler.directory-resolver']);
+        });
     }
 }

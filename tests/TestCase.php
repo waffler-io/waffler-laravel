@@ -11,6 +11,7 @@
 
 namespace Waffler\Laravel\Tests;
 
+use Override;
 use Waffler\Laravel\WafflerServiceProvider;
 
 /**
@@ -20,6 +21,7 @@ use Waffler\Laravel\WafflerServiceProvider;
  */
 class TestCase extends \Orchestra\Testbench\TestCase
 {
+    #[Override]
     protected function getPackageProviders($app): array
     {
         return [
